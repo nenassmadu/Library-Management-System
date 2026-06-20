@@ -66,6 +66,7 @@ void Author :: findAuthor(map<string, Book> &b) {
 	cout << "\n--- Search Author Info ---" << endl;
     string searchName;
     cout << "Enter Author Name : ";
+    cin.ignore();
     getline(cin, searchName);
     
     for (int i = 0; i < searchName.size(); i++) {
