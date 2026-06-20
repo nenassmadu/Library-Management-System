@@ -1,0 +1,3 @@
+A002,ENCIK FAHMI REZA,Pensyarah kanan dan penulis buku rujukan struktur data.
+A003,DR. AMMAR AZIZ,Pakar reka bentuk perisian dan pengaturcaraan berorientasikan objek.
+A007,AIMAN BANNA,Penulis buku motivasi kreatif dan novelis kontemporari tanah air.
