@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <map>
+#include <vector>
 using namespace std;
 
 Book::Book(string isbn, string t, bool PS){
@@ -123,6 +124,85 @@ void Book :: displayInfo() const{
     cout << "Title : " << title << endl;
     cout << "Book Status : " << status;
     premiumBook();
+}
+
+void Book :: loadBooks(vector<Book> &books) {
+    books.clear();
+    ifstream fin("book_list.txt");
+    string line;
+    while (getline(fin, line)) {
+        if (line.empty()) continue;
+        stringstream ss(line);
+        string isbn, title, status;
+        bool PS;
+        getline(ss, isbn, ',');
+        getline(ss, title, ',');
+        ss >> PS;
+        getline(ss, status);
+        books.push_back(Book(isbn, title, PS));
+    }
+    fin.close();
+}
+
+void Book :: saveBooks(const vector<Book> &books) {
+    ofstream fout("book_list.txt", ios::trunc);
+    for (const auto &b : books) {
+        fout << b.getISBN() << "," << b.getTitle() << "," << b.availability() << endl;
+    }
+    fout.close();
+}
+
+//update and delete book
+void Book :: updateDelBook() {
+	string isbn;
+	vector<Book> books;
+    loadBooks(books);
+    
+    int choice;
+    cout << "1. Delete \n2.Update \nEnter choice :";
+    cin >> choice;
+    
+    cout << "Enter ISBN : ";
+    cin >> isbn;
+    
+    if (choice == 1) {
+	    bool found = false;
+	    for (auto &b : books) {
+	        if (b.getISBN() == isbn) {
+	            string newTitle;
+	            cout << "Masukkan tajuk baru: ";
+	            getline(cin, newTitle);
+	            b.setTitle(newTitle); // Pastikan class Book ada setTitle
+	            found = true;
+	            break;
+	        }
+	    }
+	    
+	    if (found) {
+	        saveBooks(books);
+	        cout << "Buku berjaya dikemaskini!" << endl;
+	    } else {
+	        cout << "Buku tidak ditemui." << endl;
+	    }
+	}
+    
+    else {
+	    bool found = false;
+	    for (auto it = books.begin(); it != books.end(); ++it) {
+	        if (it->getISBN() == isbn) {
+	            books.erase(it);
+	            found = true;
+	            break;
+	        }
+	    }
+	    
+	    if (found) {
+	        saveBooks(books);
+	        cout << "Buku berjaya dipadam!" << endl;
+	    } else {
+	        cout << "Buku tidak ditemui." << endl;
+	    }
+	}
 }
 
 Book::~Book() {}
