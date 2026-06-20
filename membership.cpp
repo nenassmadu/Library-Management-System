@@ -1,4 +1,4 @@
-#include "membership.h"
+#include "membership.hpp"
 
 Membership :: Membership(string t, string id) {
 	memType = t;
