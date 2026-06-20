@@ -1,24 +1,26 @@
-#ifndef AUTHOR_H
-#define AUTHOR_H
+#ifndef AUTHOR_HPP
+#define AUTHOR_HPP
 #include <iostream>
 #include <string>
+#include <map>
 using namespace std;
 
 class Book;
 
 class Author {
 	string name, idAuthor, biography;
-	Book *book[100];
+	Book *book;
 	int totalBooks;
 	
 	public :
-		Author(string, string, string);		
+		Author(string n = "", string id = "", string bio = "");	
 		void addBook(Book *);
-		void getBook();
-		string getAuthorID();
-	    string getAuthorName();
-	    string getBiography();
-		void displayAuthor();
+		void getBook(map<string, Book> &b);
+		string getAuthorID() const;
+	    string getAuthorName() const;
+	    string getBiography() const;
+	    void findAuthor(map<string, Book> &b);
+		void displayAuthor(map<string, Book> &b);
 		~Author();
 };
 
