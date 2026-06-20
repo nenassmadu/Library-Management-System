@@ -1,5 +1,5 @@
-#ifndef MEMBERSHIP_H
-#define MEMBERSHIP_H
+#ifndef MEMBERSHIP_HPP
+#define MEMBERSHIP_HPP
 #include <iostream>
 #include <string>
 using namespace std;
