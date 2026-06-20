@@ -2,6 +2,7 @@
 #define BOOK_HPP
 #include <iostream>
 #include <map>
+#include <vector>
 using namespace std;
 
 class Book{
@@ -24,6 +25,9 @@ class Book{
        string availability() const;
        void premiumBook() const;
        void displayInfo() const;
+       void loadBooks(vector<Book> &books);
+       void saveBooks(const vector<Book> &books);
+       void updateDelBook();
        ~Book();
 };
 
