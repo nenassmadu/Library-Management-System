@@ -184,6 +184,32 @@ bool adminLogin(){
     return true;
 }
 
+void displayAllUsers() {
+    ifstream fin("user_list.txt");
+    string line;
+    
+    cout << "\n========================================================" << endl;
+    cout << left << setw(15) << "Username" << setw(15) << "Password" << setw(15) << "Type" << endl;
+    cout << "--------------------------------------------------------" << endl;
+
+    while (getline(fin, line)) {
+        if (line.empty()) continue;
+        stringstream ss(line);
+        string user, pass, type;
+
+        // Andaikan format dalam fail adalah: username,password,type
+        getline(ss, user, ',');
+        getline(ss, pass, ',');
+        getline(ss, type);
+
+        cout << left << setw(15) << user 
+             << setw(15) << pass 
+             << setw(15) << type << endl;
+    }
+    cout << "========================================================" << endl;
+    fin.close();
+}
+
 void userMenu(){
 	map<string, Book> bookList;
     int choice;
@@ -202,7 +228,23 @@ void userMenu(){
 
         switch(choice){
             case 1: Book().borrowBook(bookList); break;
-            case 2: cout << "\npulang" << endl; break;
+            case 2: { 	int bDay, rDay;
+					    cout << "\n--- Return Book & Calculate Fine ---" << endl;
+					    cout << "Enter borrow day (1-30): "; cin >> bDay;
+					    cout << "Enter return day (1-30): "; cin >> rDay;
+					
+					    BorrowRecord record(bDay, rDay, nullptr); 
+					    double fine = record.calcFine();
+					
+					    cout << "\nDuration: " << record.getDuration() << " days" << endl;
+					    if (fine > 0) {
+					        cout << "Late fee detected!" << endl;
+					        cout << "Total fine: RM " << fine << endl;
+					    } else {
+					        cout << "No fine. Thank you for returning on time!" << endl;
+					    }
+					    break;
+					}
             case 3: Author().findAuthor(bookList); break;
             case 4: cout << "\nThe system logging out..." << endl;
                     break;
@@ -212,7 +254,6 @@ void userMenu(){
 }
 
 void adminMenu(){
-	Book books;
     int choice;
 
     do{
@@ -228,42 +269,22 @@ void adminMenu(){
         cin >> choice;
 
         switch(choice){
-            case 1: Author().addBook(&books); break;
-            case 2:
-               cout << "\notw delete or update" << endl;
-               break;
-            case 3:
-               cout << "\notw tengok list user" << endl;
-               break;
-            case 4:
-               cout << "\notw logout" << endl;
-               break;
-            default:
-               cout << "\nsalah woi" << endl;
+            case 1:{ string isbn, title;
+				     cout << "Enter ISBN: "; cin >> isbn;
+				     cin.ignore(); 
+				     cout << "Enter Title: "; getline(cin, title);
+				    
+				     Book newBook(isbn, title); 
+				    
+				     Author auth; 
+				     auth.addBook(&newBook); 
+				     break;
+				   }
+            case 2: Book().updateDelBook(); break;
+            case 3: displayAllUsers(); break;
+            case 4: cout << "\nLogging Out as Admin..." << endl;
+               		break;
+            default:  cout << "\nInvalid Input" << endl;
         }
-    }while (choice != 4);
+    } while (choice != 4);
 }
-
-
-
-
-
-
-
-
-/*flow program 
-1. menu untuk pilih login as user or admin or register new user
-2. login
-3. menu untuk user
-   -1 untuk cari buku guna tajuk or isbn, keluar sekali maklumat buku and premium ke tak 
-       + available ke tak
-   -2 untuk user pinjam buku. maklumat pinjam masuk dalam list file. tukar
-      availability buku kpd not available
-   -3 untuk pemulangan, kira fine (if ada), tukar availability buku kpd available
-   -4 untuk cari author, keluar semua maklumat dia and buku yang ditulis
-   -5. logout
-4.menu untuk admin
-   -1 tambah buku dalam list
-   -2 padam or update maklumat buku
-   -3 keluarkan senarai user premium dgn basic
-   -4 logout*/
