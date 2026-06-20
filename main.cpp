@@ -1,15 +1,16 @@
 #include "BasicMember.hpp"
 #include "PremiumMember.hpp"
 #include "admin.hpp"
-#include "author.h"
+#include "author.hpp"
 #include "book.hpp"
 #include "borrowRecord.hpp"
-#include "membership.h"
+#include "membership.hpp"
 #include "user.hpp"
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <iomanip>
+#include <map>
 using namespace std;
 
 bool verifyLogin(int loginType, string un, string pw);
@@ -184,44 +185,34 @@ bool adminLogin(){
 }
 
 void userMenu(){
+	map<string, Book> bookList;
     int choice;
 
     do{
         cout << "\n==========================================" << endl;
         cout << "               USER DASHBOARD             " << endl;
         cout << "==========================================" << endl;
-        cout << "1. Search Book (Title / ISBN)" << endl;
-        cout << "2. Borrow Book" << endl;
-        cout << "3. Return Book & Calculate Fine" << endl;
-        cout << "4. Search Author Info" << endl;
-        cout << "5. Logout" << endl;
+        cout << "1. Borrow Book" << endl;
+        cout << "2. Return Book & Calculate Fine" << endl;
+        cout << "3. Search Author Info" << endl;
+        cout << "4. Logout" << endl;
         cout << "------------------------------------------" << endl;
         cout << "Enter option: ";
         cin >> choice;
 
         switch(choice){
-            case 1:
-                cout << "\notw cari buku" << endl;
-                break;
-            case 2:
-                cout << "\notw pinjam buku" << endl;
-                break;
-            case 3:
-                cout << "\notw pulang buku" << endl;
-                break;
-            case 4:
-                cout << "\notw cari author" << endl;
-                break;
-            case 5:
-                cout << "\notw logout, back to main menu" << endl;
-                break;
-            default:
-                cout << "\nmasukkan no yang ada je pls"<< endl;
+            case 1: Book().borrowBook(bookList); break;
+            case 2: cout << "\npulang" << endl; break;
+            case 3: Author().findAuthor(bookList); break;
+            case 4: cout << "\nThe system logging out..." << endl;
+                    break;
+            default: cout << "\nInvalid choice."<< endl;
         }
-    }while (choice !=5 );
+    } while (choice !=4 );
 }
 
 void adminMenu(){
+	Book books;
     int choice;
 
     do{
@@ -237,9 +228,7 @@ void adminMenu(){
         cin >> choice;
 
         switch(choice){
-            case 1:
-               cout << "\notw tambah buku" << endl;
-               break;
+            case 1: Author().addBook(&books); break;
             case 2:
                cout << "\notw delete or update" << endl;
                break;
@@ -278,4 +267,3 @@ void adminMenu(){
    -2 padam or update maklumat buku
    -3 keluarkan senarai user premium dgn basic
    -4 logout*/
-
