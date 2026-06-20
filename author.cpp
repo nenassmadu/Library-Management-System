@@ -14,11 +14,17 @@ Author :: Author(string n, string id, string bio) {
 }
 
 void Author :: addBook(Book *b) {
+	string title = b->getTitle();
+
+    for (int i = 0; i < title.length(); i++) {
+        title[i] = toupper(title[i]);
+    }
+    
 	ofstream fout("book_list.txt", ios::app);
     
     if (fout.is_open()) {
         fout << b->getISBN() << "," 
-             << b->getTitle() << "," 
+             << title<< "," 
              << "1" << endl;
              
     fout.close();
